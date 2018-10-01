@@ -1,9 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import style from './index.css';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 
-const Index = () => {
-  return <div className={style.red}>Hello, React! Invoices</div>;
-};
+import './index.css';
 
-ReactDOM.render(<Index />, document.getElementById('index'));
+import reducers from './reducers';
+import App from './components/App';
+
+const createStoreWithMiddleware = applyMiddleware()(createStore);
+
+ReactDOM.render(
+  <Provider store={createStoreWithMiddleware(reducers)}>
+    <App />
+  </Provider>
+  , document.getElementById('index')
+);
