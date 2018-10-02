@@ -7,7 +7,7 @@
     "watch-server": "nodemon server/server.js",
     "watch-client": "webpack -w --mode development",
     "build": "webpack --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js"
   },
   "keywords": [],
   "author": "",
@@ -23,9 +23,12 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
+    "expect": "^23.6.0",
     "html-webpack-plugin": "^3.2.0",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.4",
     "style-loader": "^0.23.0",
+    "supertest": "^3.3.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"
