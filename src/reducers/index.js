@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import invoiceReducer from './invoiceReducer';
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state,
+  invoices: invoiceReducer,
 });
 
 export default rootReducer;

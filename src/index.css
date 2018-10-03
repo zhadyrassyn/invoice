@@ -1,7 +1,70 @@
+/**************/
+/* GENERAL */
+/**************/
+
 body {
     margin: 0;
+    background-color: #efefef;
+    font: 16px Arial, sans-serif;
 }
 
+.wrapper {
+    width: 90%;
+    margin: auto;
+    padding-top: 20px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 60%;
+}
+
+.btn-primary {
+    background: #71caf7;
+    outline: none;
+    border: none;
+    color: #fff;
+    width: 80px;
+    height: 21px;
+    border-radius: 3px;
+    margin-top: 10px;
+    font-size: 60%;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.blue {
+    color: #71caf7;
+}
+
+/***************/
+/* HEADER **/
+/***************/
+header {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-left: 3px solid #c1bfbf;
+}
+
+.header-title {
+    padding: 0 16px;
+    font-size: 80%;
+}
+
+.header-line {
+    width: 100%;
+    background-color: #c1bfbf;
+    height: 1px;
+}
+
+/*****************/
+/* MODAL */
+/*****************/
 .modal {
     position: absolute;
     top: 0;
@@ -52,4 +115,50 @@ body {
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
+}
+
+
+/**********************/
+/* SECTION: ACTIONS */
+/**********************/
+.section-actions {
+    background-color: #fff;
+    padding: 8px 16px;
+    margin-top: 20px;
+}
+
+/****************************/
+/* SECTION: INVOICES*/
+/****************************/
+.section-invoices {
+    margin-top: 20px;
+    padding: 8px 20px 8px 16px;
+    background-color: #fff;
+}
+
+table {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+thead {
+    background: #efefef;
+}
+
+tr, td {
+    padding: 8px;
+}
+
+td {
+    width: 25%;
+}
+
+tbody tr {
+    border-bottom: 1px solid #efefef;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
 }
