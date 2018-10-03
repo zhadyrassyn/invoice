@@ -1,4 +1,6 @@
 const env = process.env.NODE_ENV || 'development';
+const logger = require('./winston');
+
 console.log('env *********** ', env);
 
 if (env === 'development') {

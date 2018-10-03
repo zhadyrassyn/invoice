@@ -13,9 +13,8 @@ router
       res.status(400).send(error);
     });
   })
-  .get('/invoice/:id', (req, res) => {
+  .get('/invoice/:id', (req, res, next) => {
     const { id } = req.params;
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send();
     }
