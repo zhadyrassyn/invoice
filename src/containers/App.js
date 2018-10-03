@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   fetchInvoices,
+  saveInvoice
 } from '../actions/actions';
 import _ from 'lodash';
+import CreateModal from '../components/CreateModal';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class App extends Component {
 
     this.showAddModal = this.showAddModal.bind(this);
     this.closeAddModal = this.closeAddModal.bind(this);
+    this.saveInvoice = this.saveInvoice.bind(this);
   }
 
   componentDidMount() {
@@ -28,6 +31,12 @@ class App extends Component {
 
   showAddModal() {
     this.setState({ showAddModalFlag: true });
+  }
+
+  saveInvoice(invoice) {
+    this.props.saveInvoice(invoice, () => {
+      this.setState({ showAddModalFlag: false })
+    });
   }
 
   renderInvoices(invoices) {
@@ -56,12 +65,7 @@ class App extends Component {
     return (
       <div>
         {showAddModalFlag &&
-          <div className="modal">
-            <div className="modal-header">
-              <span className="close" onClick={this.closeAddModal}>&times;</span>
-              <h2>Modal Header</h2>
-            </div>
-          </div>
+          <CreateModal closeAddModal={this.closeAddModal} saveInvoice={this.saveInvoice}/>
         }
 
         <div className="wrapper">
@@ -106,5 +110,6 @@ export default (connect(
   }),
   dispatch => ({
     fetchInvoices: bindActionCreators(fetchInvoices, dispatch),
+    saveInvoice: bindActionCreators(saveInvoice, dispatch),
   }),
 )(App));

@@ -1,6 +1,8 @@
 import {
   FETCH_INVOICES_SUCCESS,
-  FETCH_INVOICES_FAILURE
+  FETCH_INVOICES_FAILURE,
+  SAVE_INVOICE_SUCCESS,
+  SAVE_INVOICE_FAILURE,
 } from './types';
 
 import axios from 'axios';
@@ -21,3 +23,24 @@ export const fetchInvoices = () => (dispatch) => {
       });
     });
 };
+
+export const saveInvoice = (invoice, callback) => (dispatch) => {
+  console.log('invoice ', invoice);
+  const request = 'http://localhost:3000/api/invoice';
+  axios.put(request, invoice)
+    .then(({data}) => {
+    console.log('data ', data);
+      dispatch({
+        type: SAVE_INVOICE_SUCCESS,
+        data,
+      });
+      callback();
+    })
+    .catch((error) => {
+      dispatch({
+        type: SAVE_INVOICE_FAILURE,
+        error: error.response && error.response.message,
+      });
+      callback();
+    });
+}
