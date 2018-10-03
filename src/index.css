@@ -41,6 +41,14 @@ ul {
     color: #71caf7;
 }
 
+.width20 {
+    width: 20%;
+}
+
+.width25 {
+    width: 25%;
+}
+
 /***************/
 /* HEADER **/
 /***************/
@@ -153,7 +161,7 @@ tbody tr:last-child {
 }
 
 /**********************/
-/* SECTION: CREATE*/
+/* SECTION: CREATE */
 /**********************/
 
 .section-create {

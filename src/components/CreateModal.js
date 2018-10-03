@@ -3,6 +3,11 @@ import React, { Component } from 'react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 
+import MomentLocaleUtils, {
+  formatDate,
+  parseDate,
+} from 'react-day-picker/moment';
+
 class CreateModal extends Component {
 
   constructor(props) {
@@ -23,6 +28,26 @@ class CreateModal extends Component {
     this.handleCommentChange = this.handleCommentChange.bind(this);
   }
 
+  componentDidMount() {
+    const { modalMode, selectedInvoice } = this.props;
+    console.log('modal model ', modalMode);
+    if (modalMode === 'edit') {
+      this.setState({
+        invoiceDate: new Date(selectedInvoice.invoiceDate).toLocaleDateString(),
+        supplyDate: new Date(selectedInvoice.supplyDate).toLocaleDateString(),
+        invoiceNumber: selectedInvoice.invoiceNumber,
+        comment: selectedInvoice.comment,
+      });
+    } else {
+      this.setState({
+        invoiceDate: undefined,
+        supplyDate: undefined,
+        invoiceNumber: '',
+        comment: '',
+      });
+    }
+  }
+
   closeModal() {
     this.props.closeAddModal();
   }
@@ -35,7 +60,11 @@ class CreateModal extends Component {
       comment: this.state.comment,
     };
 
-    this.props.saveInvoice(invoice);
+    if (this.props.modalMode === 'edit') {
+      this.props.updateInvoice(invoice, this.props.selectedInvoice._id);
+    } else {
+      this.props.saveInvoice(invoice);
+    }
   }
 
   handleInvoiceDateChange(day) {
@@ -55,6 +84,7 @@ class CreateModal extends Component {
   }
 
   render() {
+
     return (
       <div className="modal">
         <div className="wrapper">
@@ -77,14 +107,33 @@ class CreateModal extends Component {
 
                 <div className="form-group col-6">
                   <label htmlFor="invoiceDate">Invoice Date</label>
-                  <DayPickerInput id="invoiceDate" onDayChange={this.handleInvoiceDateChange} />
+                  <DayPickerInput id="invoiceDate" onDayChange={this.handleInvoiceDateChange}
+                                  format="L"
+                                  formatDate={formatDate}
+                                  parseDate={parseDate}
+                                  placeholder={`${formatDate(new Date())}`}
+                                  value={this.state.invoiceDate}
+                                  dayPickerProps={{
+                                    locale: 'ru',
+                                    // localeUtils: MomentLocaleUtils,
+                                  }}
+                                  />
                 </div>
               </div>
 
               <div className="form-container">
                 <div className="form-group">
                   <label htmlFor="supplyDate">Supply Date</label>
-                  <DayPickerInput id="supplyDate" onDayChange={this.handleSupplyDateChange} />
+                  <DayPickerInput id="supplyDate" onDayChange={this.handleSupplyDateChange}
+                                  format="L"
+                                  formatDate={formatDate}
+                                  parseDate={parseDate}
+                                  placeholder={`${formatDate(new Date())}`}
+                                  value={this.state.supplyDate}
+                                  dayPickerProps={{
+                                    locale: 'ru',
+                                    // localeUtils: MomentLocaleUtils,
+                                  }}/>
                 </div>
               </div>
 

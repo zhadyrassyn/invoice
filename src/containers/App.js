@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   fetchInvoices,
-  saveInvoice
+  saveInvoice,
+  deleteInvoice,
+  updateInvoice,
 } from '../actions/actions';
 import _ from 'lodash';
 import CreateModal from '../components/CreateModal';
@@ -14,14 +16,18 @@ class App extends Component {
 
     this.state = {
       showAddModalFlag: false,
+      modalMode: 'add',
+      selectedInvoice: null,
     };
 
     this.showAddModal = this.showAddModal.bind(this);
     this.closeAddModal = this.closeAddModal.bind(this);
     this.saveInvoice = this.saveInvoice.bind(this);
+    this.updateInvoice = this.updateInvoice.bind(this);
   }
 
   componentDidMount() {
+    console.log('true');
     this.props.fetchInvoices();
   }
 
@@ -30,7 +36,7 @@ class App extends Component {
   }
 
   showAddModal() {
-    this.setState({ showAddModalFlag: true });
+    this.setState({ showAddModalFlag: true, modalMode: 'add' });
   }
 
   saveInvoice(invoice) {
@@ -39,14 +45,36 @@ class App extends Component {
     });
   }
 
+  deleteInvoice(id) {
+    this.props.deleteInvoice(id);
+  }
+
+  showUpdateModal(invoice) {
+    this.setState({
+      showAddModalFlag: true,
+      modalMode: 'edit',
+      selectedInvoice: invoice,
+    });
+  }
+
+  updateInvoice(invoice, id) {
+    this.props.updateInvoice(id, invoice, () => {
+      this.setState({ showAddModalFlag: false });
+    });
+  }
+
   renderInvoices(invoices) {
     return _.map(invoices, (invoice) => {
       return (
         <tr key={invoice._id}>
-          <td>{this.formateDate(new Date(invoice.invoiceDate))}</td>
-          <td className="blue">{invoice.invoiceNumber}</td>
-          <td>{this.formateDate(new Date(invoice.supplyDate))}</td>
-          <td>{invoice.comment}</td>
+          <td className="width20">{this.formateDate(new Date(invoice.invoiceDate))}</td>
+          <td className="blue width20">{invoice.invoiceNumber}</td>
+          <td className="width20">{this.formateDate(new Date(invoice.supplyDate))}</td>
+          <td className="width20">{invoice.comment}</td>
+          <td className="width20">
+            <button type="button" onClick={this.showUpdateModal.bind(this, invoice)}>Edit</button>
+            <button type="button" onClick={this.deleteInvoice.bind(this, invoice._id)}>Delete</button>
+          </td>
         </tr>
       );
     });
@@ -60,14 +88,20 @@ class App extends Component {
   }
 
   render() {
-    const { showAddModalFlag } = this.state;
+    const { showAddModalFlag, modalMode, selectedInvoice } = this.state;
+
     const { invoices } = this.props;
     return (
       <div>
-        {showAddModalFlag &&
-          <CreateModal closeAddModal={this.closeAddModal} saveInvoice={this.saveInvoice}/>
+        {showAddModalFlag && modalMode !== 'edit' &&
+          <CreateModal closeAddModal={this.closeAddModal} saveInvoice={this.saveInvoice} modalMode="add"
+                       selectedInvoice={{}}/>
         }
 
+        {showAddModalFlag && modalMode === 'edit' &&
+          <CreateModal closeAddModal={this.closeAddModal} updateInvoice={this.updateInvoice} modalMode="edit"
+                       selectedInvoice={selectedInvoice}/>
+        }
         <div className="wrapper">
           <header>
             <div className="header-title">
@@ -90,6 +124,7 @@ class App extends Component {
                   <td>No</td>
                   <td>Supply</td>
                   <td>Comment</td>
+                  <td>Actions</td>
                 </tr>
               </thead>
               <tbody>
@@ -111,5 +146,7 @@ export default (connect(
   dispatch => ({
     fetchInvoices: bindActionCreators(fetchInvoices, dispatch),
     saveInvoice: bindActionCreators(saveInvoice, dispatch),
+    deleteInvoice: bindActionCreators(deleteInvoice, dispatch),
+    updateInvoice: bindActionCreators(updateInvoice, dispatch),
   }),
 )(App));
