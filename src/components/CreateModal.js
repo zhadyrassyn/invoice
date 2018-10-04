@@ -147,8 +147,8 @@ class CreateModal extends Component {
             </form>
 
             <footer className="footer-save">
-              <button className="" type="button" onClick={this.closeModal}>Отмена</button>
-              <button className="" type="button" onClick={this.saveInvoice}>Сохранить</button>
+              <button className="btn-primary" type="button" onClick={this.closeModal}>Отмена</button>
+              <button className="btn-primary" type="button" onClick={this.saveInvoice}>Сохранить</button>
             </footer>
           </section>
         </div>

@@ -8,8 +8,6 @@ class LoginModal extends Component {
       username: '',
       password: '',
     };
-
-
   }
 
   closeLoginModal() {
@@ -37,7 +35,7 @@ class LoginModal extends Component {
             <input type="password" placeholder="password" onChange={this.handleChange.bind(this)} name="password"/>
           </div>
           <div className="modal-footer">
-            <button type="button" onClick={this.login.bind(this)}>Log me in!</button>
+            <button type="button" onClick={this.login.bind(this)} className="btn-white">Log me in!</button>
           </div>
         </div>
 

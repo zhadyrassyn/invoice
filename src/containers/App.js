@@ -29,6 +29,7 @@ class App extends Component {
     this.closeAddModal = this.closeAddModal.bind(this);
     this.saveInvoice = this.saveInvoice.bind(this);
     this.updateInvoice = this.updateInvoice.bind(this);
+    this.closeLoginModal = this.closeLoginModal.bind(this);
     this.login = this.login.bind(this);
   }
 
@@ -101,8 +102,8 @@ class App extends Component {
           <td className={className}>{invoice.comment}</td>
           {this.hasPriviliges(role) &&
           <td className={className}>
-            <button type="button" onClick={this.showUpdateModal.bind(this, invoice)}>Edit</button>
-            {role === 'admin' && <button type="button" onClick={this.deleteInvoice.bind(this, invoice._id)}>Delete</button>}
+            <button type="button" onClick={this.showUpdateModal.bind(this, invoice)} className="btn-primary">Edit</button>
+            {role === 'admin' && <button type="button" onClick={this.deleteInvoice.bind(this, invoice._id)} className="btn-primary">Delete</button>}
           </td>
           }
         </tr>
