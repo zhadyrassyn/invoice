@@ -71,10 +71,8 @@ export const deleteInvoice = (id) => (dispatch) => {
 
 export const updateInvoice = (id, invoice, callback) => (dispatch) => {
   const request = `${url}/invoice/${id}`;
-  console.log('true ', request);
   axios.post(request, invoice)
     .then(({data}) => {
-    console.log('responseData ', data);
       dispatch({
         type: UPDATE_INVOICE_SUCCESS,
         data: data.invoice

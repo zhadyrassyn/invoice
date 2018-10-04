@@ -122,7 +122,6 @@ describe('POST /api/invoice/:id', () => {
       .send(invoice)
       .expect(200)
       .expect((res) => {
-        console.log('res.body ', res.body);
         expect(res.body.invoice._id).toBe(id);
         expect(res.body.invoice.invoiceNumber).toBe(invoice.invoiceNumber);
         expect(new Date(res.body.invoice.invoiceDate).toTimeString()).toBe(invoice.invoiceDate.toTimeString());
