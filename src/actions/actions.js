@@ -11,10 +11,13 @@ import {
   LOGOUT,
 } from './types';
 
+const config = require('./../config');
+const url = config.default.url;
+
 import axios from 'axios';
 
 export const fetchInvoices = () => (dispatch) => {
-  const request = 'http://localhost:3000/api/invoice';
+  const request = `${url}/invoice`;
   axios.get(request)
     .then(({data}) => {
       dispatch({
@@ -31,10 +34,9 @@ export const fetchInvoices = () => (dispatch) => {
 };
 
 export const saveInvoice = (invoice, callback) => (dispatch) => {
-  const request = 'http://localhost:3000/api/invoice';
+  const request = `${url}/invoice`;
   axios.put(request, invoice)
     .then(({data}) => {
-    console.log('data ', data);
       dispatch({
         type: SAVE_INVOICE_SUCCESS,
         data,
@@ -51,7 +53,7 @@ export const saveInvoice = (invoice, callback) => (dispatch) => {
 };
 
 export const deleteInvoice = (id) => (dispatch) => {
-  const request = `http://localhost:3000/api/invoice/${id}`;
+  const request = `${url}/invoice/${id}`;
   axios.delete(request)
     .then(({data}) => {
       dispatch({
@@ -68,9 +70,11 @@ export const deleteInvoice = (id) => (dispatch) => {
 };
 
 export const updateInvoice = (id, invoice, callback) => (dispatch) => {
-  const request = `http://localhost:3000/api/invoice/${id}`;
+  const request = `${url}/invoice/${id}`;
+  console.log('true ', request);
   axios.post(request, invoice)
     .then(({data}) => {
+    console.log('responseData ', data);
       dispatch({
         type: UPDATE_INVOICE_SUCCESS,
         data: data.invoice
@@ -89,7 +93,6 @@ export const updateInvoice = (id, invoice, callback) => (dispatch) => {
 export const login = (username, password, onSuccess, onError) => {
   if (username === 'admin' && password === 'admin') {
     localStorage.setItem('role', 'admin');
-    console.log('123 ');
     onSuccess();
     return {
       type: LOGGED,

@@ -108,15 +108,16 @@ class CreateModal extends Component {
                 <div className="form-group col-6">
                   <label htmlFor="invoiceDate">Invoice Date</label>
                   <DayPickerInput id="invoiceDate" onDayChange={this.handleInvoiceDateChange}
-                                  format="L"
-                                  formatDate={formatDate}
-                                  parseDate={parseDate}
-                                  placeholder={`${formatDate(new Date())}`}
-                                  value={this.state.invoiceDate}
                                   dayPickerProps={{
                                     locale: 'ru',
                                     // localeUtils: MomentLocaleUtils,
                                   }}
+                                  format="L"
+                                  formatDate={formatDate}
+                                  parseDate={parseDate}
+                                  placeholder="Invoice date"
+                                  value={this.state.invoiceDate}
+
                                   />
                 </div>
               </div>
@@ -126,14 +127,15 @@ class CreateModal extends Component {
                   <label htmlFor="supplyDate">Supply Date</label>
                   <DayPickerInput id="supplyDate" onDayChange={this.handleSupplyDateChange}
                                   format="L"
-                                  formatDate={formatDate}
-                                  parseDate={parseDate}
-                                  placeholder={`${formatDate(new Date())}`}
-                                  value={this.state.supplyDate}
                                   dayPickerProps={{
                                     locale: 'ru',
                                     // localeUtils: MomentLocaleUtils,
-                                  }}/>
+                                  }}
+                                  formatDate={formatDate}
+                                  parseDate={parseDate}
+                                  placeholder="Supply date"
+                                  value={this.state.supplyDate}
+                                 />
                 </div>
               </div>
 
