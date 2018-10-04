@@ -123,7 +123,7 @@ class App extends Component {
   }
 
   render() {
-    const { showAddModalFlag, modalMode, selectedInvoice, showLoginModalFlag } = this.state;
+    const { showAddModalFlag, modalMode, selectedInvoice, showLoginModalFlag, loginError } = this.state;
 
     const { invoices, role } = this.props;
 
@@ -141,7 +141,7 @@ class App extends Component {
 
         {showLoginModalFlag &&
 
-          <LoginModal closeLoginModal={this.closeLoginModal} login={this.login}/>
+          <LoginModal closeLoginModal={this.closeLoginModal} login={this.login} loginError={loginError}/>
 
         }
         <div className="wrapper">

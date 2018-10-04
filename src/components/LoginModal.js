@@ -23,6 +23,7 @@ class LoginModal extends Component {
   }
 
   render() {
+    const {loginError} = this.props;
     return (
       <div className="login-modal">
         <div className="login-modal-content text-center">
@@ -33,6 +34,7 @@ class LoginModal extends Component {
           <div className="modal-body">
             <input type="text" placeholder="username" onChange={this.handleChange.bind(this)} name="username"/>
             <input type="password" placeholder="password" onChange={this.handleChange.bind(this)} name="password"/>
+            {loginError && <p className="text-danger">{loginError}</p>}
           </div>
           <div className="modal-footer">
             <button type="button" onClick={this.login.bind(this)} className="btn-white">Log me in!</button>

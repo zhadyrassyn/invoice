@@ -19,6 +19,10 @@ h3 {
     font-size: 90%;
 }
 
+.text-danger {
+    color: red;
+}
+
 .btn-primary {
     background: #71caf7;
     outline: none;
