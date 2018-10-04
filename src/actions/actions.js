@@ -7,6 +7,8 @@ import {
   DELETE_INVOICE_FAILURE,
   UPDATE_INVOICE_SUCCESS,
   UPDATE_INVOICE_FAILURE,
+  LOGGED,
+  LOGOUT,
 } from './types';
 
 import axios from 'axios';
@@ -82,4 +84,33 @@ export const updateInvoice = (id, invoice, callback) => (dispatch) => {
       });
       callback()
     });
+};
+
+export const login = (username, password, onSuccess, onError) => {
+  if (username === 'admin' && password === 'admin') {
+    localStorage.setItem('role', 'admin');
+    console.log('123 ');
+    onSuccess();
+    return {
+      type: LOGGED,
+      user: 'admin',
+    }
+  } else if (username === 'moderator' || password === 'moderator') {
+    localStorage.setItem('role', 'moderator');
+    onSuccess();
+    return {
+      type: LOGGED,
+      user: 'moderator',
+    }
+  } else {
+    onError("Unkown login/password");
+  }
+};
+
+export const logout = () => {
+  localStorage.removeItem('role');
+
+  return ({
+    type: LOGOUT
+  });
 };

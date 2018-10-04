@@ -7,6 +7,8 @@ import { createLogger } from 'redux-logger';
 
 import './index.css';
 
+import { LOGGED } from './actions/types';
+
 import reducers from './reducers';
 import App from './containers/App';
 
@@ -16,7 +18,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
-const store = createStoreWithMiddleware(reducers)
+const store = createStoreWithMiddleware(reducers);
+
+const role = localStorage.getItem('role');
+
+if(role) {
+  store.dispatch({ type: LOGGED, user: role });
+}
 
 ReactDOM.render(
   <Provider store={store}>

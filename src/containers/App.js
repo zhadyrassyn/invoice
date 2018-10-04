@@ -6,9 +6,12 @@ import {
   saveInvoice,
   deleteInvoice,
   updateInvoice,
+  login,
+  logout
 } from '../actions/actions';
 import _ from 'lodash';
 import CreateModal from '../components/CreateModal';
+import LoginModal from '../components/LoginModal';
 
 class App extends Component {
   constructor(props) {
@@ -18,12 +21,15 @@ class App extends Component {
       showAddModalFlag: false,
       modalMode: 'add',
       selectedInvoice: null,
+      showLoginModalFlag: false,
+      loginError: '',
     };
 
     this.showAddModal = this.showAddModal.bind(this);
     this.closeAddModal = this.closeAddModal.bind(this);
     this.saveInvoice = this.saveInvoice.bind(this);
     this.updateInvoice = this.updateInvoice.bind(this);
+    this.login = this.login.bind(this);
   }
 
   componentDidMount() {
@@ -63,21 +69,49 @@ class App extends Component {
     });
   }
 
-  renderInvoices(invoices) {
+  showLoginModal() {
+    this.setState({ showLoginModalFlag: true });
+  }
+
+  closeLoginModal() {
+    this.setState({ showLoginModalFlag: false });
+  }
+
+  login(username, password) {
+    this.props.login(username, password,
+      () => {
+        this.setState({ showLoginModalFlag: false });
+      }, (msg) => {
+        this.setState({ loginError: msg });
+      });
+  }
+
+  logout() {
+    this.props.logout();
+  }
+
+  renderInvoices(invoices, role) {
+    const className = this.hasPriviliges(role) ? 'width20' : 'width25';
     return _.map(invoices, (invoice) => {
       return (
         <tr key={invoice._id}>
-          <td className="width20">{this.formateDate(new Date(invoice.invoiceDate))}</td>
-          <td className="blue width20">{invoice.invoiceNumber}</td>
-          <td className="width20">{this.formateDate(new Date(invoice.supplyDate))}</td>
-          <td className="width20">{invoice.comment}</td>
-          <td className="width20">
+          <td className={className}>{this.formateDate(new Date(invoice.invoiceDate))}</td>
+          <td className={className + " blue"}>{invoice.invoiceNumber}</td>
+          <td className={className}>{this.formateDate(new Date(invoice.supplyDate))}</td>
+          <td className={className}>{invoice.comment}</td>
+          {this.hasPriviliges(role) &&
+          <td className={className}>
             <button type="button" onClick={this.showUpdateModal.bind(this, invoice)}>Edit</button>
-            <button type="button" onClick={this.deleteInvoice.bind(this, invoice._id)}>Delete</button>
+            {role === 'admin' && <button type="button" onClick={this.deleteInvoice.bind(this, invoice._id)}>Delete</button>}
           </td>
+          }
         </tr>
       );
     });
+  }
+
+  hasPriviliges(role) {
+    return role === 'admin' || role === 'moderator';
   }
 
   formateDate(date) {
@@ -88,9 +122,10 @@ class App extends Component {
   }
 
   render() {
-    const { showAddModalFlag, modalMode, selectedInvoice } = this.state;
+    const { showAddModalFlag, modalMode, selectedInvoice, showLoginModalFlag } = this.state;
 
-    const { invoices } = this.props;
+    const { invoices, role } = this.props;
+
     return (
       <div>
         {showAddModalFlag && modalMode !== 'edit' &&
@@ -101,6 +136,12 @@ class App extends Component {
         {showAddModalFlag && modalMode === 'edit' &&
           <CreateModal closeAddModal={this.closeAddModal} updateInvoice={this.updateInvoice} modalMode="edit"
                        selectedInvoice={selectedInvoice}/>
+        }
+
+        {showLoginModalFlag &&
+
+          <LoginModal closeLoginModal={this.closeLoginModal} login={this.login}/>
+
         }
         <div className="wrapper">
           <header>
@@ -113,6 +154,8 @@ class App extends Component {
           <section className="section-actions">
             <h3>Actions</h3>
             <button type="button" className="btn-primary" onClick={this.showAddModal}>Add new</button>
+            { !this.hasPriviliges(role) && <button type="button" className="btn-primary" onClick={this.showLoginModal.bind(this)}>Login</button> }
+            { this.hasPriviliges(role) && <button type="button" className="btn-primary" onClick={this.logout.bind(this)}>Logout</button>}
           </section>
 
           <section className="section-invoices">
@@ -124,11 +167,11 @@ class App extends Component {
                   <td>No</td>
                   <td>Supply</td>
                   <td>Comment</td>
-                  <td>Actions</td>
+                  {this.hasPriviliges(role) && <td>Actions</td>}
                 </tr>
               </thead>
               <tbody>
-                {this.renderInvoices(invoices)}
+                {this.renderInvoices(invoices, role)}
               </tbody>
             </table>
           </section>
@@ -142,11 +185,14 @@ export default (connect(
   state => ({
     invoices: state.invoices.invoices,
     error: state.invoices.error,
+    role: state.role.role,
   }),
   dispatch => ({
     fetchInvoices: bindActionCreators(fetchInvoices, dispatch),
     saveInvoice: bindActionCreators(saveInvoice, dispatch),
     deleteInvoice: bindActionCreators(deleteInvoice, dispatch),
     updateInvoice: bindActionCreators(updateInvoice, dispatch),
+    login: bindActionCreators(login, dispatch),
+    logout: bindActionCreators(logout, dispatch),
   }),
 )(App));

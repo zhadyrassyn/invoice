@@ -9,3 +9,6 @@ export const DELETE_INVOICE_FAILURE = 'delete_invoice_failure';
 
 export const UPDATE_INVOICE_SUCCESS = 'update_invoice_success';
 export const UPDATE_INVOICE_FAILURE = 'update_invoice_failure';
+
+export const LOGGED = 'logged';
+export const LOGOUT = 'logout';
